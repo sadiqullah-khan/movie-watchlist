@@ -4,6 +4,8 @@ const apiUrl = `http://www.omdbapi.com/?apikey=${apiKey}`;
 const btnModalSkip = document.querySelector("#modal-skip-btn");
 const btnModalNext = document.querySelector("#modal-next-btn");
 const genreSelectionModal = document.querySelector("#genre-selection-modal");
+const genreSelectionError = document.querySelector("#genre-selection-error");
+let genreSelectionErrorTimeout;
 
 genreSelectionModal.showModal();
 genreSelectionModal.addEventListener("cancel", (e) => e.preventDefault());
@@ -116,6 +118,18 @@ btnModalNext.addEventListener("click", () => {
   const genreSelectionModalInputs = document.querySelectorAll(
     "#genre-selection-form input:checked",
   );
+
+  if (genreSelectionModalInputs.length === 0) {
+    genreSelectionError.hidden = false;
+    clearTimeout(genreSelectionErrorTimeout);
+    genreSelectionErrorTimeout = setTimeout(() => {
+      genreSelectionError.hidden = true;
+    }, 2000);
+    return;
+  }
+
+  clearTimeout(genreSelectionErrorTimeout);
+  genreSelectionError.hidden = true;
 
   genreSelectionModalInputs.forEach((input) =>
     selectedGenres.push(input.value),
