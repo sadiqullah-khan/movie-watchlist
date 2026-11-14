@@ -357,6 +357,33 @@ body {
   gap: 2rem;
 }
 
+.modal-next-action {
+  position: relative;
+}
+
+.genre-selection-error {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 0.8rem);
+  width: max-content;
+  max-width: min(28rem, calc(100vw - 6rem));
+  padding: 0.6rem 1rem;
+  border-radius: 0.4rem;
+  background-color: #111827;
+  color: #fff;
+  font-size: 1.2rem;
+  box-shadow: 0 2px 6px rgb(0 0 0 / 0.2);
+}
+
+.genre-selection-error::after {
+  position: absolute;
+  top: 100%;
+  right: 1.5rem;
+  border: 0.6rem solid transparent;
+  border-top-color: #111827;
+  content: "";
+}
+
 .btn {
   background-color: #fff;
   border: none;
