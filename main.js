@@ -1,6 +1,16 @@
 const apiKey = import.meta.env.VITE_API_KEY;
 const apiUrl = `http://www.omdbapi.com/?apikey=${apiKey}`;
 
+const offlineBanner = document.querySelector("#offline-banner");
+
+function updateOfflineBanner() {
+  offlineBanner.hidden = navigator.onLine;
+}
+
+updateOfflineBanner();
+window.addEventListener("offline", updateOfflineBanner);
+window.addEventListener("online", updateOfflineBanner);
+
 const btnModalSkip = document.querySelector("#modal-skip-btn");
 const btnModalNext = document.querySelector("#modal-next-btn");
 const genreSelectionModal = document.querySelector("#genre-selection-modal");

@@ -36,6 +36,19 @@ body {
   border-width: 0;
 }
 
+.offline-banner {
+  padding: 1rem 1.5rem;
+  background-color: #b42318;
+  color: #fff;
+  font-size: 1.4rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.offline-banner[hidden] {
+  display: none;
+}
+
 .site-header {
   background-image: url("images/andre-tan-THJJRUhNlEc-unsplash.jpg");
   background-repeat: no-repeat;
