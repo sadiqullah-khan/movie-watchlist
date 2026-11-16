@@ -4,7 +4,19 @@ const apiUrl = `http://www.omdbapi.com/?apikey=${apiKey}`;
 const offlineBanner = document.querySelector("#offline-banner");
 
 function updateOfflineBanner() {
-  offlineBanner.hidden = navigator.onLine;
+  if (navigator.onLine) {
+    offlineBanner.style.backgroundColor = "#016936";
+    offlineBanner.textContent = "Internet connection restored.";
+
+    setTimeout(() => {
+      offlineBanner.hidden = true;
+    }, 3000);
+  } else {
+    offlineBanner.style.backgroundColor = "#b42318";
+    offlineBanner.textContent =
+      "You’re offline. Check your internet connection.";
+    offlineBanner.hidden = false;
+  }
 }
 
 updateOfflineBanner();
