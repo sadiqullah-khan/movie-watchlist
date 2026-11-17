@@ -1,4 +1,5 @@
 const apiKey = import.meta.env.VITE_API_KEY;
+const apiAccessToken = import.meta.env.VITE_API_ACCESS_TOKEN;
 const apiUrl = `http://www.omdbapi.com/?apikey=${apiKey}`;
 
 const offlineBanner = document.querySelector("#offline-banner");
@@ -26,6 +27,7 @@ window.addEventListener("online", updateOfflineBanner);
 const btnModalSkip = document.querySelector("#modal-skip-btn");
 const btnModalNext = document.querySelector("#modal-next-btn");
 const genreSelectionModal = document.querySelector("#genre-selection-modal");
+const genreSelectionForm = document.querySelector("#genre-selection-form");
 const genreSelectionError = document.querySelector("#genre-selection-error");
 let genreSelectionErrorTimeout;
 
@@ -132,6 +134,42 @@ clearBtn.addEventListener("click", function () {
 
 btnModalSkip.addEventListener("click", () => {
   genreSelectionModal.close();
+});
+
+// Get Genres
+async function getAvailableGenres() {
+  const response = await fetch(
+    `https://api.themoviedb.org/3/genre/movie/list`,
+    {
+      headers: {
+        Authorization: `Bearer ${apiAccessToken}`,
+        accept: "application/json",
+      },
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch genres list");
+  }
+
+  const data = await response.json();
+
+  return data;
+}
+
+// Get the available genres and insert them into the Genre Selection Modal Form
+getAvailableGenres().then((data) => {
+  const genres = data.genres;
+
+  let genresHTML = ``;
+
+  genres.forEach((genre) => {
+    genresHTML += `
+      <input type="checkbox" name="genre" value="${genre.name.toLowerCase()}" data-id="${genre.id}" id="${genre.name.toLowerCase()}" />
+      <label for="${genre.name.toLowerCase()}">${genre.name}</label>
+    `;
+  });
+  genreSelectionForm.innerHTML = genresHTML;
 });
 
 btnModalNext.addEventListener("click", () => {
