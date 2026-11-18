@@ -192,9 +192,44 @@ btnModalNext.addEventListener("click", () => {
   genreSelectionError.hidden = true;
 
   genreSelectionModalInputs.forEach((input) =>
-    selectedGenres.push(input.value),
+    selectedGenres.push(input.dataset.id),
   );
+
+  // Get movies based on selected genres
+  loadingContainer.style.display = "block";
+  getMoviesByGenres(selectedGenres)
+    .then((movies) => {
+      console.log(movies);
+    })
+    .catch((error) => console.error(error));
 
   // Close the Modal
   genreSelectionModal.close();
 });
+
+async function getMoviesByGenres(genreIds) {
+  const params = new URLSearchParams({
+    with_genres: genreIds.join("|"),
+    sort_by: "popularity.desc",
+    page: 1,
+    include_adult: false,
+  });
+
+  const response = await fetch(
+    `https://api.themoviedb.org/3/discover/movie?${params}`,
+    {
+      headers: {
+        Authorization: `Bearer ${apiAccessToken}`,
+        accept: "application/json",
+      },
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch movies");
+  }
+
+  const data = await response.json();
+
+  return data.results;
+}
